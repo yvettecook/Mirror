@@ -9,6 +9,7 @@ let package = Package(
     dependencies: [
         .Package(url: "https://github.com/vapor/vapor.git", Version(2,0,0, prereleaseIdentifiers: ["beta"])),
         .Package(url: "https://github.com/vapor/fluent-provider.git", Version(1,0,0, prereleaseIdentifiers: ["beta"])),
+        .Package(url: "https://github.com/tid-kijyun/Kanna.git", majorVersion: 2)  
     ],
     exclude: [
         "Config",
@@ -18,4 +19,3 @@ let package = Package(
         "Resources",
     ]
 )
-
