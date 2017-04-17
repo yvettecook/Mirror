@@ -21,8 +21,19 @@ private func setupModels(_ drop: Droplet) throws {
 
 private func setupRoutes(_ drop: Droplet) throws {
     drop.get { req in req.description }
+
+    let athleteController = AthleteController()
+
+    drop.get("athlete", ":id") { request in
+        guard let athleteID = request.parameters["id"]?.int else {
+            throw Abort.badRequest
+        }
+
+        return try athleteController.fetch(athleteID)
+    }
+
 }
 
 private func setupResources(_ drop: Droplet) throws {
-    drop.resource("posts", PostController())
+    drop.resource("athlete", AthleteController())
 }
