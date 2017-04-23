@@ -3,20 +3,23 @@ import HTTP
 
 final class AthleteController: ResourceRepresentable {
 
-    func show(request: Request, athlete: Athlete) throws -> ResponseRepresentable {
-        return try JSON(node: ["athleteID": 1])
-    }
-
     func fetch(_ athleteID: AthleteID, drop: Droplet) throws -> ResponseRepresentable {
         let parkrunResponse = try drop.client.get("https://www.parkrun.org.uk/results/athleteresultshistory/?athleteNumber=\(athleteID)")
 
         var runs = [Run]()
+        var name = "Unknown"
+        var totalRuns = 0
 
         switch parkrunResponse.body {
         case .data(let bytes):
             if let str = String(bytes: bytes, encoding: .utf8) {
-                let x = Parser().runs(from: str)
-                runs = x
+                runs = Parser().runs(from: str)
+                if let nameStr = Parser().athleteName(from: str) {
+                    name = nameStr
+                }
+                if let totalRunsTry = Parser().totalRuns(from: str) {
+                    totalRuns = totalRunsTry
+                }
             } else {
                 print("not a valid UTF-8 sequence")
             }
@@ -27,6 +30,8 @@ final class AthleteController: ResourceRepresentable {
         return try JSON(
           node: [
             "athleteID": athleteID,
+            "athleteName": name,
+            "totalRuns": totalRuns,
             "runs": JSON(node: runs.makeNode(in: nil))
           ]
         )
@@ -34,7 +39,7 @@ final class AthleteController: ResourceRepresentable {
 
     func makeResource() -> Resource<Athlete> {
         return Resource(
-            show: show
+            //show: show
         )
     }
 
