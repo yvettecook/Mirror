@@ -29,7 +29,7 @@ private func setupRoutes(_ drop: Droplet) throws {
             throw Abort.badRequest
         }
 
-        return try athleteController.fetch(athleteID)
+        return try athleteController.fetch(athleteID, drop: drop)
     }
 
 }
