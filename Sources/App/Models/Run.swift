@@ -20,7 +20,6 @@ struct Run {
     // TODO - This is obviously incredibly fragile. Improve!
 }
 
-// App.HTMLParsingError(modelName: "Run", string: "[\"Mile End parkrun\", \"20\", \"6\", \"44\", \"00:22:34\", \"All\", \"\"]")
 extension Run: HTMLInitialisable {
     init?(array: [String]) throws {
         if array.count == 6 {
